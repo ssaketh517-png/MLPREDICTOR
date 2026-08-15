@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adani Ports — Daily Predictor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0E1216; --panel:#171D23; --panel-2:#1D242B; --line:#2A333B;
+    --text:#E7ECEF; --text-dim:#8B98A3;
+    --rust:#E0873C; --water:#4A93A8; --green:#4FA876; --red:#D2665A;
+    --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);padding:0 0 60px;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+  header.hero{padding:56px 20px 40px;border-bottom:1px solid var(--line);position:relative;overflow:hidden;}
+  header.hero::before{content:"";position:absolute;top:0;right:-10%;width:420px;height:420px;background:radial-gradient(circle, rgba(74,147,168,0.14), transparent 70%);pointer-events:none;}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--rust);text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .eyebrow .dot{width:6px;height:6px;background:var(--rust);border-radius:50%;display:inline-block;}
+  .eyebrow .dot.live{background:var(--green);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+  h1{font-size:34px;line-height:1.1;margin:0 0 14px;font-weight:700;letter-spacing:-0.01em;max-width:620px;}
+  h1 span{color:var(--water);}
+  .lede{color:var(--text-dim);font-size:15px;line-height:1.6;max-width:560px;}
+  .lede b{color:var(--text);font-weight:600;}
+
+  .flapboard{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:24px;text-align:center;margin:28px 0;}
+  .flap-label{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:14px;}
+  .flap-row{display:flex;justify-content:center;align-items:center;gap:14px;}
+  .flap-digit{font-family:var(--mono);font-size:48px;font-weight:700;background:linear-gradient(180deg,#232B32,#161B20);border:1px solid #333E47;border-radius:8px;padding:6px 18px;min-width:1.1em;}
+  .flap-arrow{font-size:40px;}
+  .flap-up{color:var(--green);} .flap-down{color:var(--red);}
+  .flap-sub{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-top:14px;}
+
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px;}
+  .metric{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;}
+  .metric .label{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;}
+  .metric .value{font-family:var(--mono);font-size:24px;font-weight:600;margin-top:6px;}
+  .metric .sub{font-size:11px;color:var(--text-dim);margin-top:4px;}
+  .metric.good .value{color:var(--green);} .metric.bad .value{color:var(--red);}
+
+  .chart-wrap{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:24px;}
+  .chart-wrap h3{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin:0 0 14px;}
+
+  .manifest{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:24px;}
+  .manifest h3{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin:0;padding:16px 18px 0;}
+  table{width:100%;border-collapse:collapse;margin-top:12px;}
+  thead th{text-align:left;font-family:var(--mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;padding:8px 18px;border-bottom:1px solid var(--line);}
+  tbody td{font-family:var(--mono);font-size:13px;padding:9px 18px;border-bottom:1px solid rgba(42,51,59,0.5);}
+  tbody tr:last-child td{border-bottom:none;}
+  .pos{color:var(--green);} .neg{color:var(--red);} .pending{color:var(--text-dim);}
+
+  .empty, .loading{color:var(--text-dim);font-family:var(--mono);font-size:13px;padding:24px;text-align:center;}
+
+  footer{margin-top:32px;padding-top:20px;border-top:1px solid var(--line);color:var(--text-dim);font-size:12.5px;line-height:1.7;}
+  footer b{color:var(--text);}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot live"></span>AUTO-UPDATES DAILY · NOT A TRADING SIGNAL</div>
+    <h1>Adani Ports — <span>daily % move predictor</span>, tracked honestly.</h1>
+    <p class="lede">A ridge regression retrains itself every trading day on fresh price history and logs its own prediction next to what actually happened. <b>The accuracy number below is the real point of this page.</b></p>
+  </div>
+</header>
+
+<div class="wrap" id="app">
+  <div class="loading">Loading prediction log...</div>
+</div>
+
+<script>
+// TODO: set these to your repo before deploying
+const GITHUB_OWNER = "YOUR_GITHUB_USERNAME";
+const GITHUB_REPO = "YOUR_REPO_NAME";
+const GITHUB_BRANCH = "main";
+
+const DATA_URL = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/data/predictions.json?t=${Date.now()}`;
+
+async function load() {
+  const app = document.getElementById('app');
+  try {
+    const resp = await fetch(DATA_URL);
+    if (!resp.ok) throw new Error('Could not load prediction log (' + resp.status + ')');
+    const log = await resp.json();
+    render(log);
+  } catch (err) {
+    app.innerHTML = `<div class="empty">Couldn't load the log: ${err.message}<br>Check GITHUB_OWNER/GITHUB_REPO in index.html and that the cron job has run at least once.</div>`;
+  }
+}
+
+function render(log) {
+  const app = document.getElementById('app');
+  if (!log || log.length === 0) {
+    app.innerHTML = `<div class="empty">No predictions logged yet. The daily cron job will populate this after its first run — or trigger /api/cron-predict manually.</div>`;
+    return;
+  }
+
+  const scored = log.filter(e => e.actual != null);
+  const latest = log[log.length - 1];
+  const correct = scored.filter(e => e.correctDirection).length;
+  const dirAcc = scored.length ? (correct / scored.length * 100) : null;
+  const mae = scored.length ? scored.reduce((s, e) => s + Math.abs(e.predicted - e.actual), 0) / scored.length : null;
+
+  const isUp = latest.predicted >= 0;
+  const flap = `
+    <div class="flapboard">
+      <div class="flap-label">${latest.actual == null ? "Today's Predicted Move" : "Most Recent Prediction"}</div>
+      <div class="flap-row">
+        <span class="flap-arrow ${isUp?'flap-up':'flap-down'}">${isUp?'▲':'▼'}</span>
+        <span class="flap-digit">${Math.abs(latest.predicted).toFixed(2)}%</span>
+      </div>
+      <div class="flap-sub">As of ${latest.date}. ${latest.actual == null ? 'Result pending — check back after the next trading day.' : `Actual move was ${latest.actual.toFixed(2)}% (${latest.correctDirection ? 'direction matched' : 'direction missed'}).`}</div>
+    </div>
+  `;
+
+  const metrics = `
+    <div class="metrics">
+      <div class="metric ${dirAcc!=null && dirAcc>50?'good':'bad'}">
+        <div class="label">Directional Accuracy</div>
+        <div class="value">${dirAcc!=null ? dirAcc.toFixed(1)+'%' : '—'}</div>
+        <div class="sub">vs 50% coin flip</div>
+      </div>
+      <div class="metric">
+        <div class="label">Avg Error (MAE)</div>
+        <div class="value">${mae!=null ? mae.toFixed(2)+'%' : '—'}</div>
+        <div class="sub">across scored days</div>
+      </div>
+      <div class="metric">
+        <div class="label">Days Logged</div>
+        <div class="value">${log.length}</div>
+        <div class="sub">${scored.length} scored, ${log.length-scored.length} pending</div>
+      </div>
+    </div>
+  `;
+
+  const chartData = scored.slice(-60);
+  const chartHtml = `
+    <div class="chart-wrap">
+      <h3>Predicted vs actual — last ${chartData.length} scored days</h3>
+      <canvas id="chart" height="110"></canvas>
+    </div>
+  `;
+
+  const rows = log.slice(-15).reverse().map(e => {
+    if (e.actual == null) {
+      return `<tr><td>${e.date}</td><td class="${e.predicted>=0?'pos':'neg'}">${e.predicted.toFixed(2)}%</td><td class="pending">pending</td><td class="pending">—</td></tr>`;
+    }
+    return `<tr><td>${e.date}</td><td class="${e.predicted>=0?'pos':'neg'}">${e.predicted.toFixed(2)}%</td><td class="${e.actual>=0?'pos':'neg'}">${e.actual.toFixed(2)}%</td><td>${e.correctDirection?'✓ match':'✗ miss'}</td></tr>`;
+  }).join('');
+
+  const manifest = `
+    <div class="manifest">
+      <h3>Manifest — last 15 logged days</h3>
+      <table>
+        <thead><tr><th>Date</th><th>Predicted</th><th>Actual</th><th>Direction</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+
+  app.innerHTML = flap + metrics + chartHtml + manifest + `
+    <footer>
+      <b>What this is:</b> a ridge regression on lagged returns, moving averages, RSI and volume change, retrained daily and evaluated only on days it predicted <i>before</i> the actual result was known. <b>What this isn't:</b> a system proven to beat the market — judge the accuracy number above against 50% (coin flip) before trusting it with anything real.
+    </footer>
+  `;
+
+  if (chartData.length > 1) {
+    new Chart(document.getElementById('chart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: chartData.map(e => e.date),
+        datasets: [
+          { label: 'Actual % move', data: chartData.map(e => e.actual), borderColor: '#4A93A8', backgroundColor: 'rgba(74,147,168,0.08)', borderWidth: 2, pointRadius: 0, tension: 0.15 },
+          { label: 'Predicted % move', data: chartData.map(e => e.predicted), borderColor: '#E0873C', backgroundColor: 'rgba(224,135,60,0.08)', borderWidth: 2, pointRadius: 0, tension: 0.15, borderDash: [4,3] }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { labels: { color: '#E7ECEF', font: { family: 'IBM Plex Mono', size: 11 } } } },
+        scales: {
+          x: { ticks: { color: '#8B98A3', maxTicksLimit: 8, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { color: '#2A333B' } },
+          y: { ticks: { color: '#8B98A3', font: { family: 'IBM Plex Mono', size: 10 } }, grid: { color: '#2A333B' } }
+        }
+      }
+    });
+  }
+}
+
+load();
+</script>
+</body>
+</html>
