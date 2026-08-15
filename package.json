@@ -1,0 +1,9 @@
+{
+  "name": "adani-ports-predictor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Daily-retraining ridge regression that predicts Adani Ports' next-day % move and logs its own accuracy over time. Learning project, not a trading signal.",
+  "dependencies": {
+    "mathjs": "^12.4.3"
+  }
+}
