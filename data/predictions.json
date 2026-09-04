@@ -107,8 +107,15 @@
   {
     "date": "2026-09-03",
     "predicted": -0.0917,
+    "actual": 0.0469,
+    "correctDirection": false,
+    "loggedAt": "2026-09-03T11:01:59.705Z"
+  },
+  {
+    "date": "2026-09-04",
+    "predicted": 0.01,
     "actual": null,
     "correctDirection": null,
-    "loggedAt": "2026-09-03T11:01:59.705Z"
+    "loggedAt": "2026-09-04T11:02:03.359Z"
   }
 ]
