@@ -124,5 +124,12 @@
     "actual": null,
     "correctDirection": null,
     "loggedAt": "2026-09-07T11:01:07.920Z"
+  },
+  {
+    "date": "2026-09-08",
+    "predicted": 0.0849,
+    "actual": null,
+    "correctDirection": null,
+    "loggedAt": "2026-09-08T11:01:07.969Z"
   }
 ]
