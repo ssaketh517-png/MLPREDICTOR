@@ -268,8 +268,15 @@
   {
     "date": "2026-10-08",
     "predicted": 0.38,
+    "actual": 3.103,
+    "correctDirection": true,
+    "loggedAt": "2026-10-08T11:01:08.125Z"
+  },
+  {
+    "date": "2026-10-09",
+    "predicted": -0.0177,
     "actual": null,
     "correctDirection": null,
-    "loggedAt": "2026-10-08T11:01:08.125Z"
+    "loggedAt": "2026-10-09T11:01:07.868Z"
   }
 ]
