@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Adani Ports — Daily Predictor</title>
+<title>Adani Ports - Daily Predictor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
@@ -27,61 +27,152 @@
   h1 span{color:var(--water);}
   .lede{color:var(--text-dim);font-size:15px;line-height:1.6;max-width:560px;}
   .lede b{color:var(--text);font-weight:600;}
-
+ 
   .flapboard{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:24px;text-align:center;margin:28px 0;}
   .flap-label{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:14px;}
   .flap-row{display:flex;justify-content:center;align-items:center;gap:14px;}
   .flap-digit{font-family:var(--mono);font-size:48px;font-weight:700;background:linear-gradient(180deg,#232B32,#161B20);border:1px solid #333E47;border-radius:8px;padding:6px 18px;min-width:1.1em;}
   .flap-arrow{font-size:40px;}
   .flap-up{color:var(--green);} .flap-down{color:var(--red);}
-  .flap-sub{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-top:14px;}
-
-  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px;}
+  .flap-sub{font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-top:14px;line-height:1.6;}
+ 
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px;}
   .metric{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;}
   .metric .label{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;}
   .metric .value{font-family:var(--mono);font-size:24px;font-weight:600;margin-top:6px;}
-  .metric .sub{font-size:11px;color:var(--text-dim);margin-top:4px;}
+  .metric .sub{font-size:11px;color:var(--text-dim);margin-top:4px;line-height:1.4;}
   .metric.good .value{color:var(--green);} .metric.bad .value{color:var(--red);}
-
-  .chart-wrap{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:24px;}
-  .chart-wrap h3{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin:0 0 14px;}
-
-  .manifest{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:24px;}
-  .manifest h3{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin:0;padding:16px 18px 0;}
-  table{width:100%;border-collapse:collapse;margin-top:12px;}
-  thead th{text-align:left;font-family:var(--mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;padding:8px 18px;border-bottom:1px solid var(--line);}
-  tbody td{font-family:var(--mono);font-size:13px;padding:9px 18px;border-bottom:1px solid rgba(42,51,59,0.5);}
+ 
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:24px;}
+  .card h3{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin:0 0 14px;}
+  .chart-box{position:relative;height:300px;}
+ 
+  .scroll-x{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;min-width:420px;}
+  thead th{text-align:left;font-family:var(--mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;padding:8px 12px;border-bottom:1px solid var(--line);white-space:nowrap;}
+  tbody td{font-family:var(--mono);font-size:13px;padding:10px 12px;border-bottom:1px solid rgba(42,51,59,0.5);white-space:nowrap;}
   tbody tr:last-child td{border-bottom:none;}
-  .pos{color:var(--green);} .neg{color:var(--red);} .pending{color:var(--text-dim);}
-
-  .empty, .loading{color:var(--text-dim);font-family:var(--mono);font-size:13px;padding:24px;text-align:center;}
-
+  tr.model td{color:var(--text);font-weight:600;}
+  .pos{color:var(--green);} .neg{color:var(--red);} .pending{color:var(--text-dim);} .dim{color:var(--text-dim);}
+ 
+  .verdict{border-left:3px solid var(--rust);background:var(--panel-2);border-radius:6px;padding:16px 18px;margin-top:16px;font-size:14px;line-height:1.7;}
+  .verdict b{color:var(--text);}
+  .verdict ul{margin:8px 0 0;padding-left:18px;color:var(--text-dim);}
+  .verdict li{margin-bottom:4px;}
+ 
+  .empty, .loading{color:var(--text-dim);font-family:var(--mono);font-size:13px;padding:24px;text-align:center;line-height:1.7;}
+ 
   footer{margin-top:32px;padding-top:20px;border-top:1px solid var(--line);color:var(--text-dim);font-size:12.5px;line-height:1.7;}
   footer b{color:var(--text);}
 </style>
 </head>
 <body>
-
+ 
 <header class="hero">
   <div class="wrap">
     <div class="eyebrow"><span class="dot live"></span>AUTO-UPDATES DAILY · NOT A TRADING SIGNAL</div>
-    <h1>Adani Ports — <span>daily % move predictor</span>, tracked honestly.</h1>
-    <p class="lede">A ridge regression retrains itself every trading day on fresh price history and logs its own prediction next to what actually happened. <b>The accuracy number below is the real point of this page.</b></p>
+    <h1>Adani Ports - <span>daily % move predictor</span>, tracked honestly.</h1>
+    <p class="lede">A ridge regression retrains itself every trading day on fresh price history and logs its own prediction next to what actually happened. <b>It is scored against two dumb baselines, so you can see whether it adds anything at all.</b></p>
   </div>
 </header>
-
+ 
 <div class="wrap" id="app">
   <div class="loading">Loading prediction log...</div>
 </div>
-
+ 
 <script>
-// TODO: set these to your repo before deploying
 const GITHUB_OWNER = "ssaketh517-png";
 const GITHUB_REPO = "MLPREDICTOR";
 const GITHUB_BRANCH = "main";
-
+ 
 const DATA_URL = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/data/predictions.json?t=${Date.now()}`;
-
+ 
+const MIN_DAYS_FOR_VERDICT = 30;
+ 
+function fmt(x, d) { return x == null || isNaN(x) ? 'n/a' : x.toFixed(d); }
+ 
+// 95% Wilson score interval for a proportion k/n, returned in percent
+function wilson(k, n) {
+  if (n === 0) return null;
+  const z = 1.96, p = k / n, z2 = z * z;
+  const denom = 1 + z2 / n;
+  const center = (p + z2 / (2 * n)) / denom;
+  const half = (z * Math.sqrt(p * (1 - p) / n + z2 / (4 * n * n))) / denom;
+  return { lo: (center - half) * 100, hi: (center + half) * 100 };
+}
+ 
+function computeStats(log) {
+  const scored = log.filter(e => e.actual != null);
+  const n = scored.length;
+  if (n === 0) return { n: 0, scored };
+ 
+  const correct = scored.filter(e => e.correctDirection).length;
+  const modelAcc = correct / n * 100;
+  const modelMae = scored.reduce((s, e) => s + Math.abs(e.predicted - e.actual), 0) / n;
+ 
+  // Baseline 1: always guess "up"
+  const upDays = scored.filter(e => e.actual > 0).length;
+  const alwaysUpAcc = upDays / n * 100;
+ 
+  // Baseline 2: always predict 0% move (only meaningful for size error)
+  const zeroMae = scored.reduce((s, e) => s + Math.abs(e.actual), 0) / n;
+ 
+  // Rolling window: last 20 scored days
+  const recent = scored.slice(-20);
+  const recentCorrect = recent.filter(e => e.correctDirection).length;
+  const recentAcc = recent.length ? recentCorrect / recent.length * 100 : null;
+ 
+  // How often the model leans up
+  const predUp = scored.filter(e => e.predicted > 0).length;
+  const predUpShare = predUp / n * 100;
+ 
+  return {
+    n, scored, correct, modelAcc, modelMae,
+    alwaysUpAcc, upDays, zeroMae,
+    recentAcc, recentN: recent.length, recentCorrect,
+    predUpShare, ci: wilson(correct, n)
+  };
+}
+ 
+function buildVerdict(s) {
+  if (s.n === 0) return '';
+  const points = [];
+ 
+  if (s.n < MIN_DAYS_FOR_VERDICT) {
+    points.push(`Only ${s.n} scored days so far. Under ${MIN_DAYS_FOR_VERDICT}, the accuracy number is mostly noise.`);
+  }
+ 
+  const ci = s.ci;
+  let headline;
+  if (ci.lo > 50) {
+    headline = 'Direction accuracy is above a coin flip with 95% confidence.';
+  } else if (ci.hi < 50) {
+    headline = 'Direction accuracy is below a coin flip.';
+  } else {
+    headline = 'Direction accuracy cannot be told apart from a coin flip yet.';
+  }
+  points.push(`With ${s.n} days, the true accuracy could plausibly be anywhere from ${fmt(ci.lo,0)}% to ${fmt(ci.hi,0)}%. A coin flip (50%) sits ${ci.lo <= 50 && ci.hi >= 50 ? 'inside' : 'outside'} that range.`);
+ 
+  const diffUp = s.modelAcc - s.alwaysUpAcc;
+  if (diffUp > 0) {
+    points.push(`It beats "always guess up" by ${fmt(diffUp,1)} points (${fmt(s.modelAcc,1)}% vs ${fmt(s.alwaysUpAcc,1)}%).`);
+  } else {
+    points.push(`It does not beat "always guess up" (${fmt(s.modelAcc,1)}% vs ${fmt(s.alwaysUpAcc,1)}%). Some of its hit rate may just be riding an upward drift.`);
+  }
+ 
+  if (s.modelMae < s.zeroMae) {
+    points.push(`On size, its average error (${fmt(s.modelMae,2)}%) is ${fmt(s.zeroMae - s.modelMae,2)} points better than predicting 0% every day (${fmt(s.zeroMae,2)}%).`);
+  } else {
+    points.push(`On size, its average error (${fmt(s.modelMae,2)}%) is no better than predicting 0% every day (${fmt(s.zeroMae,2)}%).`);
+  }
+ 
+  if (s.recentAcc != null && s.recentN >= 10) {
+    points.push(`Last ${s.recentN} scored days: ${fmt(s.recentAcc,0)}% correct, versus ${fmt(s.modelAcc,0)}% overall. Big swings between windows are what noise looks like.`);
+  }
+ 
+  return `<div class="verdict"><b>${headline}</b><ul>${points.map(p => `<li>${p}</li>`).join('')}</ul></div>`;
+}
+ 
 async function load() {
   const app = document.getElementById('app');
   try {
@@ -90,109 +181,143 @@ async function load() {
     const log = await resp.json();
     render(log);
   } catch (err) {
-    app.innerHTML = `<div class="empty">Couldn't load the log: ${err.message}<br>Check GITHUB_OWNER/GITHUB_REPO in index.html and that the cron job has run at least once.</div>`;
+    app.innerHTML = `<div class="empty">Couldn't load the log: ${err.message}<br>Check that the repo is public and the cron job has run at least once.</div>`;
   }
 }
-
+ 
 function render(log) {
   const app = document.getElementById('app');
   if (!log || log.length === 0) {
-    app.innerHTML = `<div class="empty">No predictions logged yet. The daily cron job will populate this after its first run — or trigger /api/cron-predict manually.</div>`;
+    app.innerHTML = `<div class="empty">No predictions logged yet. The daily cron job will populate this after its first run.</div>`;
     return;
   }
-
-  const scored = log.filter(e => e.actual != null);
+ 
+  const s = computeStats(log);
   const latest = log[log.length - 1];
-  const correct = scored.filter(e => e.correctDirection).length;
-  const dirAcc = scored.length ? (correct / scored.length * 100) : null;
-  const mae = scored.length ? scored.reduce((s, e) => s + Math.abs(e.predicted - e.actual), 0) / scored.length : null;
-
+  const pending = log.length - s.n;
   const isUp = latest.predicted >= 0;
+ 
   const flap = `
     <div class="flapboard">
-      <div class="flap-label">${latest.actual == null ? "Today's Predicted Move" : "Most Recent Prediction"}</div>
+      <div class="flap-label">${latest.actual == null ? "Latest Prediction" : "Most Recent Prediction"}</div>
       <div class="flap-row">
-        <span class="flap-arrow ${isUp?'flap-up':'flap-down'}">${isUp?'▲':'▼'}</span>
+        <span class="flap-arrow ${isUp ? 'flap-up' : 'flap-down'}">${isUp ? '▲' : '▼'}</span>
         <span class="flap-digit">${Math.abs(latest.predicted).toFixed(2)}%</span>
       </div>
-      <div class="flap-sub">As of ${latest.date}. ${latest.actual == null ? 'Result pending — check back after the next trading day.' : `Actual move was ${latest.actual.toFixed(2)}% (${latest.correctDirection ? 'direction matched' : 'direction missed'}).`}</div>
+      <div class="flap-sub">As of ${latest.date}. ${latest.actual == null ? 'Result pending, check back after the next trading day.' : `Actual move was ${latest.actual.toFixed(2)}% (${latest.correctDirection ? 'direction matched' : 'direction missed'}).`}</div>
     </div>
   `;
-
-  const metrics = `
-    <div class="metrics">
-      <div class="metric ${dirAcc!=null && dirAcc>50?'good':'bad'}">
-        <div class="label">Directional Accuracy</div>
-        <div class="value">${dirAcc!=null ? dirAcc.toFixed(1)+'%' : '—'}</div>
-        <div class="sub">vs 50% coin flip</div>
+ 
+  let metrics = '';
+  let scoreboard = '';
+  let verdict = '';
+  let chartCard = '';
+ 
+  if (s.n > 0) {
+    metrics = `
+      <div class="metrics">
+        <div class="metric ${s.modelAcc > 50 ? 'good' : 'bad'}">
+          <div class="label">Model Direction</div>
+          <div class="value">${fmt(s.modelAcc,1)}%</div>
+          <div class="sub">${s.correct} of ${s.n} scored days. Range: ${fmt(s.ci.lo,0)}-${fmt(s.ci.hi,0)}%</div>
+        </div>
+        <div class="metric ${s.modelAcc > s.alwaysUpAcc ? 'good' : 'bad'}">
+          <div class="label">Always-Up Baseline</div>
+          <div class="value">${fmt(s.alwaysUpAcc,1)}%</div>
+          <div class="sub">guess "up" every day</div>
+        </div>
+        <div class="metric ${s.modelMae < s.zeroMae ? 'good' : 'bad'}">
+          <div class="label">Model Avg Error</div>
+          <div class="value">${fmt(s.modelMae,2)}%</div>
+          <div class="sub">vs ${fmt(s.zeroMae,2)}% if it just said 0%</div>
+        </div>
+        <div class="metric">
+          <div class="label">Days Logged</div>
+          <div class="value">${log.length}</div>
+          <div class="sub">${s.n} scored, ${pending} pending</div>
+        </div>
       </div>
-      <div class="metric">
-        <div class="label">Avg Error (MAE)</div>
-        <div class="value">${mae!=null ? mae.toFixed(2)+'%' : '—'}</div>
-        <div class="sub">across scored days</div>
+    `;
+ 
+    scoreboard = `
+      <div class="card">
+        <h3>Scoreboard - model vs dumb baselines</h3>
+        <div class="scroll-x">
+          <table>
+            <thead><tr><th>Strategy</th><th>Direction right</th><th>Avg size error</th></tr></thead>
+            <tbody>
+              <tr class="model"><td>Ridge model</td><td>${fmt(s.modelAcc,1)}%</td><td>${fmt(s.modelMae,2)}%</td></tr>
+              <tr><td>Always guess up</td><td>${fmt(s.alwaysUpAcc,1)}%</td><td class="dim">n/a</td></tr>
+              <tr><td>Always predict 0%</td><td class="dim">n/a</td><td>${fmt(s.zeroMae,2)}%</td></tr>
+              <tr><td>Coin flip</td><td>50.0%</td><td class="dim">n/a</td></tr>
+            </tbody>
+          </table>
+        </div>
+        ${buildVerdict(s)}
       </div>
-      <div class="metric">
-        <div class="label">Days Logged</div>
-        <div class="value">${log.length}</div>
-        <div class="sub">${scored.length} scored, ${log.length-scored.length} pending</div>
+    `;
+ 
+    const chartData = s.scored.slice(-60);
+    chartCard = `
+      <div class="card">
+        <h3>Predicted vs actual % move - last ${chartData.length} scored days</h3>
+        <div class="chart-box"><canvas id="chart"></canvas></div>
       </div>
-    </div>
-  `;
-
-  const chartData = scored.slice(-60);
-  const chartHtml = `
-    <div class="chart-wrap">
-      <h3>Predicted vs actual — last ${chartData.length} scored days</h3>
-      <canvas id="chart" height="110"></canvas>
-    </div>
-  `;
-
+    `;
+  } else {
+    metrics = `<div class="empty">No days scored yet. Results fill in after the next trading day.</div>`;
+  }
+ 
   const rows = log.slice(-15).reverse().map(e => {
     if (e.actual == null) {
-      return `<tr><td>${e.date}</td><td class="${e.predicted>=0?'pos':'neg'}">${e.predicted.toFixed(2)}%</td><td class="pending">pending</td><td class="pending">—</td></tr>`;
+      return `<tr><td>${e.date}</td><td class="${e.predicted >= 0 ? 'pos' : 'neg'}">${e.predicted.toFixed(2)}%</td><td class="pending">pending</td><td class="pending">-</td></tr>`;
     }
-    return `<tr><td>${e.date}</td><td class="${e.predicted>=0?'pos':'neg'}">${e.predicted.toFixed(2)}%</td><td class="${e.actual>=0?'pos':'neg'}">${e.actual.toFixed(2)}%</td><td>${e.correctDirection?'✓ match':'✗ miss'}</td></tr>`;
+    return `<tr><td>${e.date}</td><td class="${e.predicted >= 0 ? 'pos' : 'neg'}">${e.predicted.toFixed(2)}%</td><td class="${e.actual >= 0 ? 'pos' : 'neg'}">${e.actual.toFixed(2)}%</td><td>${e.correctDirection ? '✓ match' : '✗ miss'}</td></tr>`;
   }).join('');
-
+ 
   const manifest = `
-    <div class="manifest">
-      <h3>Manifest — last 15 logged days</h3>
-      <table>
-        <thead><tr><th>Date</th><th>Predicted</th><th>Actual</th><th>Direction</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
+    <div class="card">
+      <h3>Manifest - last 15 logged days</h3>
+      <div class="scroll-x">
+        <table>
+          <thead><tr><th>Date</th><th>Predicted</th><th>Actual</th><th>Direction</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
     </div>
   `;
-
-  app.innerHTML = flap + metrics + chartHtml + manifest + `
+ 
+  app.innerHTML = flap + metrics + scoreboard + chartCard + manifest + `
     <footer>
-      <b>What this is:</b> a ridge regression on lagged returns, moving averages, RSI and volume change, retrained daily and evaluated only on days it predicted <i>before</i> the actual result was known. <b>What this isn't:</b> a system proven to beat the market — judge the accuracy number above against 50% (coin flip) before trusting it with anything real.
+      <b>What this is:</b> a ridge regression on lagged returns, moving averages, RSI and volume change, retrained daily and scored only on predictions made <i>before</i> the result was known. <b>What this isn't:</b> a system proven to beat the market. The scoreboard compares it to guessing "up" every day and to predicting 0%, because a model that cannot beat those has not learned anything useful. This is a learning project, not a trading signal.
     </footer>
   `;
-
-  if (chartData.length > 1) {
+ 
+  if (s.n > 1) {
+    const chartData = s.scored.slice(-60);
     new Chart(document.getElementById('chart').getContext('2d'), {
       type: 'line',
       data: {
         labels: chartData.map(e => e.date),
         datasets: [
           { label: 'Actual % move', data: chartData.map(e => e.actual), borderColor: '#4A93A8', backgroundColor: 'rgba(74,147,168,0.08)', borderWidth: 2, pointRadius: 0, tension: 0.15 },
-          { label: 'Predicted % move', data: chartData.map(e => e.predicted), borderColor: '#E0873C', backgroundColor: 'rgba(224,135,60,0.08)', borderWidth: 2, pointRadius: 0, tension: 0.15, borderDash: [4,3] }
+          { label: 'Predicted % move', data: chartData.map(e => e.predicted), borderColor: '#E0873C', backgroundColor: 'rgba(224,135,60,0.08)', borderWidth: 2, pointRadius: 0, tension: 0.15, borderDash: [4, 3] }
         ]
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         interaction: { mode: 'index', intersect: false },
         plugins: { legend: { labels: { color: '#E7ECEF', font: { family: 'IBM Plex Mono', size: 11 } } } },
         scales: {
-          x: { ticks: { color: '#8B98A3', maxTicksLimit: 8, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { color: '#2A333B' } },
+          x: { ticks: { color: '#8B98A3', maxTicksLimit: 6, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { color: '#2A333B' } },
           y: { ticks: { color: '#8B98A3', font: { family: 'IBM Plex Mono', size: 10 } }, grid: { color: '#2A333B' } }
         }
       }
     });
   }
 }
-
+ 
 load();
 </script>
 </body>
